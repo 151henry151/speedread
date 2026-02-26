@@ -34,4 +34,4 @@ GNU General Public License v3.0 (GPL-3.0). See [LICENSE](LICENSE).
 
 ## Version
 
-1.2.0 — see [CHANGELOG.md](CHANGELOG.md).
+1.3.0 — see [CHANGELOG.md](CHANGELOG.md).

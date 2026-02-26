@@ -1,9 +1,29 @@
 (function () {
   'use strict';
 
-  // PDF.js worker
-  if (typeof pdfjsLib !== 'undefined') {
-    pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+  const PDF_JS_URL = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js';
+  const PDF_WORKER_URL = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+
+  function ensurePdfJs() {
+    if (typeof pdfjsLib !== 'undefined') {
+      pdfjsLib.GlobalWorkerOptions.workerSrc = PDF_WORKER_URL;
+      return Promise.resolve();
+    }
+    return new Promise(function (resolve, reject) {
+      var script = document.createElement('script');
+      script.src = PDF_JS_URL;
+      script.async = true;
+      script.onload = function () {
+        if (typeof pdfjsLib !== 'undefined') {
+          pdfjsLib.GlobalWorkerOptions.workerSrc = PDF_WORKER_URL;
+          resolve();
+        } else {
+          reject(new Error('PDF.js did not load'));
+        }
+      };
+      script.onerror = function () { reject(new Error('Failed to load PDF.js')); };
+      document.head.appendChild(script);
+    });
   }
 
   const textInput = document.getElementById('text-input');
@@ -54,7 +74,28 @@
     } else {
       html = escapeHtml(word);
     }
-    wordDisplay.innerHTML = html;
+    wordDisplay.innerHTML = '<span class="word-wrap">' + html + '</span>';
+    if (highlight) {
+      requestAnimationFrame(function () { pinCenterLetter(); });
+    } else {
+      var wrap = wordDisplay.querySelector('.word-wrap');
+      if (wrap) {
+        wrap.style.left = '';
+        wrap.style.transform = '';
+      }
+    }
+  }
+
+  function pinCenterLetter() {
+    var wrap = wordDisplay.querySelector('.word-wrap');
+    var centerEl = wordDisplay.querySelector('.center-letter');
+    if (!wrap || !centerEl) return;
+    var wrapRect = wrap.getBoundingClientRect();
+    var centerRect = centerEl.getBoundingClientRect();
+    var centerLetterCenter = (centerRect.left - wrapRect.left) + centerRect.width / 2;
+    wrap.style.position = 'relative';
+    wrap.style.left = '50%';
+    wrap.style.transform = 'translateX(' + (-centerLetterCenter) + 'px)';
   }
 
   function escapeHtml(s) {
@@ -184,6 +225,7 @@
   fontSizeSlider.addEventListener('input', () => {
     applyFontSize();
     fontSizeValue.textContent = fontSizeSlider.value;
+    if (words.length > 0 && highlightCenterCheck.checked) requestAnimationFrame(pinCenterLetter);
   });
 
   playPauseBtn.addEventListener('click', () => {
@@ -246,7 +288,7 @@
   });
 
   async function extractTextFromPdf(arrayBuffer) {
-    if (typeof pdfjsLib === 'undefined') throw new Error('PDF.js not loaded');
+    await ensurePdfJs();
     const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
     const numPages = pdf.numPages;
     const parts = [];

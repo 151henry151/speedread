@@ -5,6 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.3.0] - 2025-02-26
+
+### Fixed
+
+- PDF upload on mobile: PDF.js is now loaded on demand if not yet available, fixing "PDF.js is not loaded" when selecting a PDF before the script has finished loading.
+- Center-letter highlight: the highlighted letter is now fixed at the same horizontal position on screen for every word (no shift with word length or character width).
+
+### Changed
+
+- Word display uses a positioned wrapper so the center letter stays visually centered when "Highlight center letter" is on.
+
 ## [1.2.0] - 2025-02-26
 
 ### Changed
