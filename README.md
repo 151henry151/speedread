@@ -30,4 +30,4 @@ A simple one-page web app for speed-reading: paste text or upload a document, th
 
 ## Version
 
-1.0.0 — see [CHANGELOG.md](CHANGELOG.md).
+1.1.0 — see [CHANGELOG.md](CHANGELOG.md).

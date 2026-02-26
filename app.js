@@ -90,6 +90,7 @@
     renderWord();
     scheduleNext();
     showReader();
+    controls.classList.add('playback-overlay');
     scheduleHideControls();
   }
 
@@ -100,6 +101,7 @@
       timerId = null;
     }
     playPauseBtn.textContent = 'Play';
+    controls.classList.remove('playback-overlay');
     showControls();
   }
 
@@ -146,6 +148,11 @@
 
   function showControls() {
     controls.classList.remove('hidden');
+    if (isPlaying) {
+      controls.classList.add('playback-overlay');
+    } else {
+      controls.classList.remove('playback-overlay');
+    }
     if (hideControlsTimer) {
       clearTimeout(hideControlsTimer);
       hideControlsTimer = null;
@@ -155,7 +162,10 @@
   function scheduleHideControls() {
     if (hideControlsTimer) clearTimeout(hideControlsTimer);
     hideControlsTimer = setTimeout(() => {
-      if (isPlaying) controls.classList.add('hidden');
+      if (isPlaying) {
+        controls.classList.add('hidden');
+        controls.classList.remove('playback-overlay');
+      }
       hideControlsTimer = null;
     }, HIDE_CONTROLS_DELAY_MS);
   }

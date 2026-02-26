@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.0] - 2025-02-26
+
+### Changed
+
+- During playback, moving the mouse to show controls now shows only the reader controls (WPM, font size, highlight, play/pause, skip) in a bottom bar; the text input and file upload no longer appear.
+- The word display stays visible when the playback controls are shown; controls appear as a semi-transparent bottom bar instead of covering the screen.
+
 ## [1.0.0] - 2025-02-26
 
 ### Added
