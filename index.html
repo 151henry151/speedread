@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SpeedRead</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,600;1,9..40,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div id="controls" class="controls">
+    <section class="input-section">
+      <label for="text-input">Paste text or upload a document</label>
+      <textarea id="text-input" placeholder="Paste your text here, or use the file upload below…"></textarea>
+      <div class="upload-row">
+        <input type="file" id="file-input" accept=".txt,.pdf,.md,.html,.xml,.json,.csv" />
+        <span class="upload-hint">PDF, TXT, MD, HTML, etc.</span>
+      </div>
+    </section>
+
+    <section class="reader-controls">
+      <div class="control-row">
+        <label class="toggle-label">
+          <input type="checkbox" id="highlight-center" checked />
+          <span>Highlight center letter</span>
+        </label>
+      </div>
+      <div class="control-row">
+        <label for="wpm">Words per minute</label>
+        <input type="range" id="wpm" min="60" max="600" value="300" />
+        <span id="wpm-value">300</span> WPM
+      </div>
+      <div class="control-row">
+        <label for="font-size">Font size</label>
+        <input type="range" id="font-size" min="12" max="120" value="48" />
+        <span id="font-size-value">48</span>px
+      </div>
+      <div class="control-row playback">
+        <button type="button" id="skip-back" title="Previous word (←)">← Back</button>
+        <button type="button" id="play-pause" title="Play / Pause (Space)">Play</button>
+        <button type="button" id="skip-forward" title="Next word (→)">Forward →</button>
+      </div>
+    </section>
+  </div>
+
+  <div id="reader" class="reader hidden" aria-live="polite">
+    <span id="word-display"></span>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
