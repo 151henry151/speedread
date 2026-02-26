@@ -5,6 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.0] - 2025-02-26
+
+### Changed
+
+- Words-per-minute slider maximum increased from 600 to 1000 WPM.
+
+### Added
+
+- Project licensed under the GNU General Public License v3.0 (GPL-3.0); see [LICENSE](LICENSE).
+
 ## [1.1.0] - 2025-02-26
 
 ### Changed

@@ -28,6 +28,10 @@ A simple one-page web app for speed-reading: paste text or upload a document, th
 - Plain HTML, CSS, and JavaScript.
 - [PDF.js](https://mozilla.github.io/pdf.js/) (loaded from CDN) for PDF text extraction.
 
+## License
+
+GNU General Public License v3.0 (GPL-3.0). See [LICENSE](LICENSE).
+
 ## Version
 
-1.1.0 — see [CHANGELOG.md](CHANGELOG.md).
+1.2.0 — see [CHANGELOG.md](CHANGELOG.md).
