@@ -216,15 +216,32 @@ input[type="range"] {
   text-align: center;
   user-select: none;
   transition: font-size 0.15s ease;
-  display: block;
-  width: 100%;
+  font-family: "JetBrains Mono", "Fira Code", "Consolas", "Liberation Mono", Menlo, monospace;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: nowrap;
 }
 
-#word-display .word-wrap {
-  display: inline-block;
-  white-space: nowrap;
+#word-display .word-before,
+#word-display .word-after {
+  flex: 0 0 auto;
+}
+
+#word-display .word-center {
+  flex: 0 0 1ch;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  min-width: 1ch;
 }
 
 #word-display .center-letter {
   color: var(--accent);
+}
+
+#word-display .word-pad {
+  color: transparent;
+  user-select: none;
+  pointer-events: none;
 }

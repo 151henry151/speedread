@@ -1,28 +1,55 @@
 (function () {
   'use strict';
 
-  const PDF_JS_URL = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js';
-  const PDF_WORKER_URL = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+  const PDF_JS_LOCAL = 'pdf.min.js';
+  const PDF_WORKER_LOCAL = 'pdf.worker.min.js';
+
+  function waitForPdfJs(timeoutMs) {
+    timeoutMs = timeoutMs || 6000;
+    return new Promise(function (resolve) {
+      if (typeof pdfjsLib !== 'undefined') return resolve(true);
+      var start = Date.now();
+      var t = setInterval(function () {
+        if (typeof pdfjsLib !== 'undefined') {
+          clearInterval(t);
+          return resolve(true);
+        }
+        if (Date.now() - start >= timeoutMs) {
+          clearInterval(t);
+          resolve(false);
+        }
+      }, 50);
+    });
+  }
+
+  function loadScript(src) {
+    return new Promise(function (resolve, reject) {
+      var script = document.createElement('script');
+      script.src = src;
+      script.async = false;
+      script.onload = function () { resolve(); };
+      script.onerror = function () { reject(new Error('Failed to load PDF.js')); };
+      document.head.appendChild(script);
+    });
+  }
 
   function ensurePdfJs() {
     if (typeof pdfjsLib !== 'undefined') {
-      pdfjsLib.GlobalWorkerOptions.workerSrc = PDF_WORKER_URL;
+      pdfjsLib.GlobalWorkerOptions.workerSrc = PDF_WORKER_LOCAL;
       return Promise.resolve();
     }
-    return new Promise(function (resolve, reject) {
-      var script = document.createElement('script');
-      script.src = PDF_JS_URL;
-      script.async = true;
-      script.onload = function () {
+    return waitForPdfJs(5000).then(function (ready) {
+      if (ready) {
+        pdfjsLib.GlobalWorkerOptions.workerSrc = PDF_WORKER_LOCAL;
+        return;
+      }
+      return loadScript(PDF_JS_LOCAL).then(function () {
         if (typeof pdfjsLib !== 'undefined') {
-          pdfjsLib.GlobalWorkerOptions.workerSrc = PDF_WORKER_URL;
-          resolve();
-        } else {
-          reject(new Error('PDF.js did not load'));
+          pdfjsLib.GlobalWorkerOptions.workerSrc = PDF_WORKER_LOCAL;
+          return;
         }
-      };
-      script.onerror = function () { reject(new Error('Failed to load PDF.js')); };
-      document.head.appendChild(script);
+        throw new Error('PDF.js did not load');
+      });
     });
   }
 
@@ -60,42 +87,33 @@
     readerEl.classList.add('hidden');
   }
 
+  var PAD_CHAR = 'a';
+
   function renderWord() {
     if (words.length === 0) return;
-    const word = words[index];
+    let word = words[index];
+    var padded = false;
     const highlight = highlightCenterCheck.checked && word.length > 0;
+    if (highlight && word.length > 0 && word.length % 2 === 0) {
+      word = word + PAD_CHAR;
+      padded = true;
+    }
     let html = '';
-    if (highlight) {
+    if (highlight && word.length > 0) {
       const center = Math.floor(word.length / 2);
       const before = word.slice(0, center);
       const letter = word[center];
       const after = word.slice(center + 1);
-      html = escapeHtml(before) + '<span class="center-letter">' + escapeHtml(letter) + '</span>' + escapeHtml(after);
+      var afterHtml = padded
+        ? escapeHtml(after.slice(0, -1)) + '<span class="word-pad">' + escapeHtml(after.slice(-1)) + '</span>'
+        : escapeHtml(after);
+      html = '<span class="word-before">' + escapeHtml(before) + '</span>' +
+             '<span class="word-center"><span class="center-letter">' + escapeHtml(letter) + '</span></span>' +
+             '<span class="word-after">' + afterHtml + '</span>';
     } else {
       html = escapeHtml(word);
     }
-    wordDisplay.innerHTML = '<span class="word-wrap">' + html + '</span>';
-    if (highlight) {
-      requestAnimationFrame(function () { pinCenterLetter(); });
-    } else {
-      var wrap = wordDisplay.querySelector('.word-wrap');
-      if (wrap) {
-        wrap.style.left = '';
-        wrap.style.transform = '';
-      }
-    }
-  }
-
-  function pinCenterLetter() {
-    var wrap = wordDisplay.querySelector('.word-wrap');
-    var centerEl = wordDisplay.querySelector('.center-letter');
-    if (!wrap || !centerEl) return;
-    var wrapRect = wrap.getBoundingClientRect();
-    var centerRect = centerEl.getBoundingClientRect();
-    var centerLetterCenter = (centerRect.left - wrapRect.left) + centerRect.width / 2;
-    wrap.style.position = 'relative';
-    wrap.style.left = '50%';
-    wrap.style.transform = 'translateX(' + (-centerLetterCenter) + 'px)';
+    wordDisplay.innerHTML = html;
   }
 
   function escapeHtml(s) {
@@ -225,7 +243,6 @@
   fontSizeSlider.addEventListener('input', () => {
     applyFontSize();
     fontSizeValue.textContent = fontSizeSlider.value;
-    if (words.length > 0 && highlightCenterCheck.checked) requestAnimationFrame(pinCenterLetter);
   });
 
   playPauseBtn.addEventListener('click', () => {

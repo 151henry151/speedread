@@ -5,16 +5,24 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.4.0] - 2025-02-26
+
+### Fixed
+
+- PDF upload: PDF.js is now self-hosted (same origin) so it loads reliably on desktop and mobile instead of failing when the CDN is blocked or slow.
+- Center-letter highlight: the red center letter now stays in a fixed horizontal position for every word. Uses a strict monospace font (JetBrains Mono), a flex layout with a 1ch-wide center slot, and invisible character padding for even-length words so the center does not shift with word length or punctuation.
+
+### Changed
+
+- Word display uses JetBrains Mono (with monospace fallbacks) so every character has equal width.
+- Even-length words are padded with an invisible character (transparent) so the center letter is truly centered; the previous trailing-space approach did not reserve width in all browsers.
+
 ## [1.3.0] - 2025-02-26
 
 ### Fixed
 
-- PDF upload on mobile: PDF.js is now loaded on demand if not yet available, fixing "PDF.js is not loaded" when selecting a PDF before the script has finished loading.
-- Center-letter highlight: the highlighted letter is now fixed at the same horizontal position on screen for every word (no shift with word length or character width).
-
-### Changed
-
-- Word display uses a positioned wrapper so the center letter stays visually centered when "Highlight center letter" is on.
+- PDF upload on mobile: PDF.js loaded on demand when not yet available.
+- Center-letter positioning improvements (refined further in 1.4.0).
 
 ## [1.2.0] - 2025-02-26
 
