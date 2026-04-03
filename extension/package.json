@@ -1,0 +1,16 @@
+{
+  "name": "speedread-extension",
+  "private": true,
+  "version": "1.6.0",
+  "description": "Build scripts for the SpeedRead browser extension",
+  "scripts": {
+    "build": "node build.mjs"
+  },
+  "devDependencies": {
+    "esbuild": "^0.25.0"
+  },
+  "dependencies": {
+    "@mozilla/readability": "^0.6.0",
+    "pdfjs-dist": "^3.11.174"
+  }
+}

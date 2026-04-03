@@ -5,6 +5,28 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.6.0] - 2026-04-03
+
+### Changed
+
+- Record extension testing status: the SpeedRead WebExtension has been tested on **Firefox** only; **Chrome** / **Chromium** / **Edge** and **Safari** have not been tested yet.
+
+## [1.5.0] - 2026-04-03
+
+### Added
+
+- Browser extension in `extension/` (Manifest V3) for Chrome/Chromium/Edge and Firefox: toolbar action or shortcut opens a full-page overlay, extracts article content with Mozilla Readability (with fallbacks to `article` / `main` / page body), and loads the SpeedRead reader in an iframe with fullscreen and close controls.
+- Extension PDF tabs: when the active tab URL is `http`/`https` and the path ends in `.pdf`, fetch PDF bytes in `background.js`, extract text with PDF.js (`disableWorker` in the service worker), pass text through `storage.session`, and open `reader/reader.html` in a new tab.
+- Build step under `extension/` (`npm install` / `npm run build`) bundling the content script with esbuild, syncing `app.js` and `styles.css` into `extension/reader/`, and copying PDF.js legacy builds from `pdfjs-dist`.
+- `extension/reader/boot.js` and `window.__SPEEDREAD_EXTENSION__` integration in `app.js` for iframe messaging (`SPEEDREAD_SET_TEXT`, `SPEEDREAD_CLOSE`), Escape-to-close behavior, and applying `speedreadPending` from `storage.session` when opening the reader from the PDF path.
+- `storage` permission in the extension manifest for `chrome.storage.session` / `browser.storage.session`.
+- Extension toolbar icons: add `icons/icon32.png` and `icons/icon96.png` and reference them in `manifest.json` for Firefox-friendly sizes; add `options_ui` with `options.html` explaining how to pin the extension to the Firefox toolbar.
+- Extension HTML flow: open `reader/reader.html` in a new tab via `runtime.sendMessage` and `storage.session` instead of an iframe in the page, avoiding blank/black reader views when sites use CSP `frame-src` that blocks extension URLs.
+
+### Changed
+
+- Document Safari workflow via `xcrun safari-web-extension-converter` and Xcode in the README.
+
 ## [1.4.0] - 2025-02-26
 
 ### Fixed
