@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "SpeedRead",
-  "version": "1.6.0",
+  "version": "1.6.1",
   "description": "Speed-read the current page: extracts article content (like reader mode) and opens the SpeedRead one-word reader with fullscreen support.",
   "icons": {
     "16": "icons/icon16.png",
@@ -40,7 +40,13 @@
   "browser_specific_settings": {
     "gecko": {
       "id": "speedread@hromp.com",
-      "strict_min_version": "109.0"
+      "strict_min_version": "140.0",
+      "data_collection_permissions": {
+        "required": ["none"]
+      }
+    },
+    "gecko_android": {
+      "strict_min_version": "142.0"
     }
   },
   "content_security_policy": {

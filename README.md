@@ -42,6 +42,8 @@ The `extension/` folder is a **Manifest V3** WebExtension that speed-reads the *
 
 Use the toolbar button or the shortcut **Alt+Shift+S** (configurable under extension shortcuts).
 
+**Firefox / Firefox for Android (AMO listing):** the manifest targets **Firefox 140+** on desktop and **Firefox for Android 142+** (required for Mozilla’s data consent fields and Android listing).
+
 **Firefox toolbar icon:** new extensions appear in the **extensions menu** (puzzle piece on the right), not on the bar, until you pin them. Open that menu → find **SpeedRead** → click the **pin** beside it (or use **⋯** / gear → **Pin to Toolbar**). Optional: **Add-ons** → SpeedRead → **Preferences** opens a short page with the same steps.
 
 **Build the extension** (copies the latest `app.js` / `styles.css` from the repo root and bundles the content script):
@@ -71,4 +73,4 @@ GNU General Public License v3.0 (GPL-3.0). See [LICENSE](LICENSE).
 
 ## Version
 
-1.6.0 — see [CHANGELOG.md](CHANGELOG.md).
+1.6.1 — see [CHANGELOG.md](CHANGELOG.md).

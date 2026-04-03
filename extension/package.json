@@ -1,7 +1,7 @@
 {
   "name": "speedread-extension",
   "private": true,
-  "version": "1.6.0",
+  "version": "1.6.1",
   "description": "Build scripts for the SpeedRead browser extension",
   "scripts": {
     "build": "node build.mjs"

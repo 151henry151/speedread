@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.6.1] - 2026-04-03
+
+### Changed
+
+- Extension manifest: add `browser_specific_settings.gecko.data_collection_permissions` with `required: ["none"]` for AMO (Mozilla built-in data consent; extension does not transmit page or personal data to external servers).
+- Extension manifest: set `browser_specific_settings.gecko.strict_min_version` to `140.0` so desktop Firefox supports `data_collection_permissions`.
+- Extension manifest: add `browser_specific_settings.gecko_android` with `strict_min_version` `142.0` so the add-on is listed for **Firefox for Android** on AMO and meets Mozilla’s minimum for the same data consent fields on Android.
+
 ## [1.6.0] - 2026-04-03
 
 ### Changed
